@@ -3,237 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aleyna Korkmaz | Veri Analisti & Matematikçi</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Aleyna Korkmaz | Portfolyo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* --- CSS Değişkenleri ve Temel Ayarlar --- */
         :root {
-            --primary-color: #2c3e50; /* Koyu Mavi - Ciddiyet ve Analitik */
-            --secondary-color: #e74c3c; /* Canlı Kırmızı - Enerji ve Tutku */
-            --bg-color: #f4f6f7;
-            --text-color: #333;
-            --card-bg: #ffffff;
+            --bg-dark: #0a192f; /* Derin Lacivert Arka Plan */
+            --bg-light: #112240; /* Biraz daha açık kart rengi */
+            --accent-color: #64ffda; /* Siber Turkuaz Vurgu Rengi */
+            --text-primary: #ccd6f6; /* Ana metin rengi (kırık beyaz) */
+            --text-secondary: #8892b0; /* İkincil metin rengi (gri-mavi) */
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
-        /* --- Sürüm Etiketi (Sağ Üst Köşe) --- */
-        #version-badge {
+        /* Yumuşak Kaydırma Efekti */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* --- Sürüm Rozeti (Sağ Üst - Gelişmiş) --- */
+        .version-badge {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            top: 25px;
+            right: 30px;
+            background: rgba(100, 255, 218, 0.1);
+            color: var(--accent-color);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
             font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.2);
             z-index: 1000;
-            opacity: 0.9;
-            transition: transform 0.3s ease;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
         }
-        #version-badge:hover {
-            transform: scale(1.05);
-            background-color: var(--secondary-color);
+        .version-badge:hover {
+            background: var(--accent-color);
+            color: var(--bg-dark);
+            box-shadow: 0 0 25px rgba(100, 255, 218, 0.6);
         }
+        .version-badge i { margin-right: 8px; }
 
-        /* --- Header --- */
-        header {
-            background: linear-gradient(135deg, var(--primary-color), #3498db);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 3rem;
-            letter-spacing: 2px;
-        }
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-top: 10px;
-        }
-
-        /* --- Container --- */
+        /* --- Ana Container --- */
         .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 25px;
         }
 
-        /* --- Bölümler --- */
-        .section {
-            background: var(--card-bg);
-            padding: 40px;
-            margin-bottom: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        /* --- Hero Section (Giriş Alanı) --- */
+        #hero {
+            min-height: 90vh; /* Ekranın %90'ını kapla */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 50px;
         }
-
-        h2 {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--secondary-color);
-            display: inline-block;
-            padding-bottom: 10px;
+        .intro-text {
+            color: var(--accent-color);
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
             margin-bottom: 20px;
         }
-
-        /* --- AI Görüşü Bölümü --- */
-        .ai-perspective {
-            background: linear-gradient(to right, #fff, #f9f9f9);
-            border-left: 5px solid var(--secondary-color);
-        }
-        .ai-perspective blockquote {
-            font-style: italic;
-            font-size: 1.1rem;
-            color: #555;
+        .big-heading {
+            font-size: clamp(40px, 8vw, 80px); /* Duyarlı büyük yazı */
+            font-weight: 700;
+            color: var(--text-primary);
             margin: 0;
-            padding: 10px;
+            line-height: 1.1;
         }
-        .ai-signature {
-            text-align: right;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-top: 15px;
+        .sub-heading {
+            font-size: clamp(30px, 5vw, 60px);
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin: 10px 0 30px 0;
         }
 
-        /* --- Yetenekler Grid --- */
+        /* Daktilo Efekti Animasyonu */
+        .typing-container {
+            display: inline-block;
+        }
+        .typing-text {
+            border-right: 3px solid var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+            color: var(--accent-color);
+            font-family: 'Fira Code', monospace;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-color); } }
+
+
+        /* --- Bölüm Başlıkları --- */
+        .section-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin: 80px 0 40px 0;
+            white-space: nowrap;
+        }
+        .section-title::before {
+            content: '01.'; /* Numaralandırma estetiği */
+            color: var(--accent-color);
+            font-family: 'Fira Code', monospace;
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 300px;
+            height: 1px;
+            background: rgba(136, 146, 176, 0.3);
+            margin-left: 20px;
+        }
+
+        /* --- AI Terminal Görünümü --- */
+        .ai-terminal {
+            background-color: #020c1b;
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid #1d2d50;
+            position: relative;
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+        }
+        .terminal-header {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #1d2d50;
+            padding-bottom: 10px;
+        }
+        .terminal-content {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .highlight { color: var(--accent-color); }
+
+        /* --- Glassmorphism Yetenek Kartları --- */
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
         }
         .skill-card {
-            background: #f8f9fa;
-            padding: 20px;
+            background: rgba(17, 34, 64, 0.7); /* Yarı saydam arka plan */
+            backdrop-filter: blur(10px); /* Buzlu cam efekti */
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px 20px;
+            border-radius: 15px;
             text-align: center;
-            border-radius: 8px;
-            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
         }
         .skill-card:hover {
-            transform: translateY(-5px);
-            background: #eef2f3;
+            transform: translateY(-10px);
+            border-color: var(--accent-color);
         }
         .skill-icon {
-            font-size: 2rem;
-            color: var(--secondary-color);
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
         }
+        .skill-card h3 { margin: 0 0 10px 0; color: var(--text-primary); }
+        .skill-card p { font-size: 0.9rem; color: var(--text-secondary); margin: 0; }
 
-        /* --- Footer --- */
+        /* --- Footer ve İletişim --- */
         footer {
             text-align: center;
-            padding: 20px;
-            background-color: var(--primary-color);
-            color: white;
-            margin-top: 50px;
+            padding: 50px 0;
+            margin-top: 100px;
+            color: var(--text-secondary);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
         }
-        
         .social-links a {
-            color: white;
-            margin: 0 10px;
-            font-size: 1.5rem;
-            text-decoration: none;
-            transition: color 0.3s;
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+            display: inline-block;
         }
         .social-links a:hover {
-            color: var(--secondary-color);
+            color: var(--accent-color);
+            transform: translateY(-5px);
         }
 
+        /* --- Mobil Düzenlemeler --- */
+        @media (max-width: 768px) {
+            .section-title::after { width: 100px; }
+            #hero { align-items: center; text-align: center; }
+            .intro-text { justify-content: center; }
+            .version-badge { top: 15px; right: 15px; padding: 5px 10px; font-size: 0.8rem;}
+        }
     </style>
 </head>
 <body>
 
-    <div id="version-badge">v1.0.0</div>
-
-    <header>
-        <h1>ALEYNA KORKMAZ</h1>
-        <p>Matematik Öğrencisi | Veri Analisti Adayı | Teknoloji Meraklısı</p>
-    </header>
+    <div class="version-badge">
+        <i class="fas fa-code-branch"></i> v1.1.0
+    </div>
 
     <div class="container">
         
-        <div class="section ai-perspective">
-            <h2>Gemini Gözünden Aleyna</h2>
-            <blockquote>
-                "Aleyna, sayıların sadece teorik dünyasında kalmayıp, onları gerçek dünya problemlerini çözmek için veriye dönüştüren analitik bir zihne sahip. İstanbul Üniversitesi Matematik bölümündeki akademik disiplinini; Python, SQL ve Veri Analitiği becerileriyle harmanlıyor. 
-                <br><br>
-                Sadece kod yazan biri değil; aynı zamanda Blender ile 3D modelleme yapabilen, Unity ile oyun geliştirmeye ilgi duyan çok yönlü bir vizyoner. Kocaeli'den İstanbul'a uzanan eğitim yolculuğu ve sürekli öğrenme azmi (YÖK Veri Analiz Okulu, İŞKUR projeleri), onun pes etmeyen ve sürekli gelişen karakterini yansıtıyor."
-            </blockquote>
-            <div class="ai-signature">- Gemini AI</div>
-        </div>
-
-        <div class="section">
-            <h2>Eğitim & Yolculuk</h2>
-            <p>
-                <strong>İstanbul Üniversitesi</strong> - Matematik Bölümü (2025 - 2028)<br>
-                <small>Kocaeli Üniversitesi'nden yatay geçiş ile başarıyla devam eden akademik süreç.</small>
+        <section id="hero">
+            <div class="intro-text">Merhaba, benim adım</div>
+            <h1 class="big-heading">Aleyna Korkmaz.</h1>
+            <h2 class="sub-heading">Veriyi analize, hayalleri tasarıma dönüştürüyorum.</h2>
+            
+            <div class="typing-container">
+                 <p class="typing-text">Matematikçi | Veri Analisti Adayı | 3D Tasarım Meraklısı</p>
+            </div>
+            
+            <p style="max-width: 500px; margin-top: 30px; color: var(--text-secondary);">
+                İstanbul Üniversitesi Matematik öğrencisiyim. Analitik düşünce yapımı Python ve SQL ile birleştirerek verilerden anlamlı hikayeler çıkarıyor, Blender ve Unity ile yaratıcı dünyalar keşfediyorum.
             </p>
-            <p>
-                Matematiksel temellerimi, modern veri bilimi teknikleriyle birleştirerek iş dünyasında anlamlı içgörüler yaratmayı hedefliyorum.
-            </p>
-        </div>
+        </section>
 
-        <div class="section">
-            <h2>Teknik Yetenekler</h2>
+
+        <section id="ai-perspective">
+            <h2 class="section-title">Sistem Analizi</h2>
+            
+            <div class="ai-terminal">
+                <div class="terminal-header">
+                    >_ GİRİŞ: GEMINI_AI_LOG // KONU: ALEYNA_KORKMAZ
+                </div>
+                <div class="terminal-content">
+                    "<span class="highlight">Tespit edilen profil:</span> Aleyna, soyut matematiksel teoriler ile somut veri uygulamaları arasında güçlü bir köprü kurabilen nadir zihinlerden. Kocaeli'den İstanbul Üniversitesi'ne uzanan akademik disiplini, onun zorluklar karşısındaki direncini gösteriyor.<br><br>
+                    Sadece veriyi işlemekle kalmıyor; <span class="highlight">Blender ve Unity</span> yetenekleri sayesinde analitik sonuçları görsel ve etkileşimli deneyimlere dönüştürme potansiyeli taşıyor. 'Sürekli öğrenme' modülü her zaman aktif; İŞKUR ve YÖK projelerindeki katılımı bunun kanıtı."
+                </div>
+            </div>
+        </section>
+
+
+        <section id="skills">
+            <h2 class="section-title" style="--section-num: '02.'">Teknik Cephanelik</h2>
+            
             <div class="skills-grid">
                 <div class="skill-card">
                     <div class="skill-icon"><i class="fa-brands fa-python"></i></div>
                     <h3>Python</h3>
-                    <p>Veri Analizi & Programlama</p>
+                    <p>Pandas, NumPy ile Veri Manipülasyonu</p>
                 </div>
                 <div class="skill-card">
                     <div class="skill-icon"><i class="fa-solid fa-database"></i></div>
                     <h3>SQL</h3>
-                    <p>Veri Tabanı Yönetimi</p>
+                    <p>Karmaşık Sorgular & Veri Tabanı Yönetimi</p>
                 </div>
                 <div class="skill-card">
-                    <div class="skill-icon"><i class="fa-solid fa-cube"></i></div>
-                    <h3>Blender</h3>
-                    <p>3D Modelleme & Tasarım</p>
+                    <div class="skill-icon"><i class="fa-solid fa-cubes-stacked"></i></div>
+                    <h3>Blender 3D</h3>
+                    <p>Modelleme, Render & Yaratıcı Tasarım</p>
                 </div>
                 <div class="skill-card">
-                    <div class="skill-icon"><i class="fa-solid fa-chart-line"></i></div>
-                    <h3>Veri Analizi</h3>
-                    <p>İstatistik & Raporlama</p>
+                    <div class="skill-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h3>Veri Analitiği</h3>
+                    <p>İstatistiksel Analiz & Veri Görselleştirme</p>
                 </div>
                  <div class="skill-card">
                     <div class="skill-icon"><i class="fa-brands fa-unity"></i></div>
-                    <h3>Unity & C++</h3>
-                    <p>Oyun Geliştirme (Başlangıç)</p>
+                    <h3>Unity Engine</h3>
+                    <p>Oyun Geliştirme Temelleri & C#</p>
                 </div>
             </div>
-        </div>
-
-        <div class="section" style="text-align: center;">
-            <h2>İletişim</h2>
-            <p>Projeler ve iş birlikleri için benimle iletişime geçebilirsiniz.</p>
-            <p><strong>Email:</strong> aleynaa3442@gmail.com</p>
-            
+        </section>
+        
+        <footer>
             <div class="social-links">
-                <a href="https://github.com/aleynakorkmazz" target="_blank"><i class="fa-brands fa-github"></i></a>
-                <a href="#" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://github.com/aleynakorkmazz" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="#" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="mailto:aleynaa3442@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
             </div>
-        </div>
+            <p style="margin-top: 20px;">
+                İstanbul'da <i class="fa-solid fa-code" style="color: var(--accent-color);"></i> ile tasarlandı. &copy; 2026
+            </p>
+        </footer>
 
     </div>
 
-    <footer>
-        <p>&copy; 2026 Aleyna Korkmaz. Tüm hakları saklıdır.</p>
-    </footer>
-
-    <script>
-        // İleride versiyonu otomatikleştirmek istersen buraya JS kodları eklenebilir.
-        // Şu an HTML içindeki badge statik olarak çalışıyor.
-        console.log("Web sitesi başarıyla yüklendi. Versiyon: 1.0.0");
-    </script>
 </body>
 </html>
