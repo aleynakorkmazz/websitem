@@ -3,300 +3,464 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aleyna Korkmaz | Portfolyo</title>
+    <title>Aleyna Korkmaz | Veri & Tasarım</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- CSS Değişkenleri ve Temel Ayarlar --- */
         :root {
-            --bg-dark: #0a192f; /* Derin Lacivert Arka Plan */
-            --bg-light: #112240; /* Biraz daha açık kart rengi */
-            --accent-color: #64ffda; /* Siber Turkuaz Vurgu Rengi */
-            --text-primary: #ccd6f6; /* Ana metin rengi (kırık beyaz) */
-            --text-secondary: #8892b0; /* İkincil metin rengi (gri-mavi) */
+            --bg-dark: #0b1120;
+            --text-main: #e2e8f0;
+            --accent: #38bdf8; /* Gökyüzü Mavisi */
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --card-bg: rgba(30, 41, 59, 0.7);
         }
+
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
-            padding: 0;
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.7;
+            color: var(--text-main);
             overflow-x: hidden;
         }
 
-        /* Yumuşak Kaydırma Efekti */
-        html {
-            scroll-behavior: smooth;
+        /* --- CANLI ARKA PLAN (CANVAS) --- */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* İçeriğin arkasında */
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
         }
 
-        /* --- Sürüm Rozeti (Sağ Üst - Gelişmiş) --- */
+        /* --- SÜRÜM ROZETİ v1.2.0 --- */
         .version-badge {
             position: fixed;
-            top: 25px;
-            right: 30px;
-            background: rgba(100, 255, 218, 0.1);
-            color: var(--accent-color);
-            padding: 8px 16px;
-            border-radius: 30px;
+            top: 20px;
+            right: 20px;
+            padding: 8px 15px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            border-radius: 20px;
             font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-            font-weight: bold;
-            border: 1px solid var(--accent-color);
-            box-shadow: 0 0 15px rgba(100, 255, 218, 0.2);
-            z-index: 1000;
+            font-size: 0.8rem;
             backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 0 15px var(--accent-glow);
+            transition: 0.3s;
         }
-        .version-badge:hover {
-            background: var(--accent-color);
-            color: var(--bg-dark);
-            box-shadow: 0 0 25px rgba(100, 255, 218, 0.6);
-        }
-        .version-badge i { margin-right: 8px; }
+        .version-badge:hover { transform: scale(1.1); background: var(--accent); color: #000; }
 
-        /* --- Ana Container --- */
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 0 25px;
+            padding: 0 20px;
         }
 
-        /* --- Hero Section (Giriş Alanı) --- */
-        #hero {
-            min-height: 90vh; /* Ekranın %90'ını kapla */
+        /* --- SCROLL ANIMASYONLARI İÇİN --- */
+        .hidden-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .show-section {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
-            padding-top: 50px;
         }
-        .intro-text {
-            color: var(--accent-color);
-            font-family: 'Fira Code', monospace;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-        .big-heading {
-            font-size: clamp(40px, 8vw, 80px); /* Duyarlı büyük yazı */
-            font-weight: 700;
-            color: var(--text-primary);
+
+        .glitch-wrapper { display: inline-block; }
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
             margin: 0;
             line-height: 1.1;
-        }
-        .sub-heading {
-            font-size: clamp(30px, 5vw, 60px);
-            font-weight: 700;
-            color: var(--text-secondary);
-            margin: 10px 0 30px 0;
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
         }
 
-        /* Daktilo Efekti Animasyonu */
-        .typing-container {
-            display: inline-block;
-        }
-        .typing-text {
-            border-right: 3px solid var(--accent-color);
-            white-space: nowrap;
-            overflow: hidden;
-            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
-            color: var(--accent-color);
+        .hero p {
             font-family: 'Fira Code', monospace;
+            color: #94a3b8;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            border-left: 3px solid var(--accent);
+            padding-left: 15px;
         }
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-color); } }
 
-
-        /* --- Bölüm Başlıkları --- */
-        .section-title {
-            display: flex;
-            align-items: center;
-            font-size: 1.8rem;
-            color: var(--text-primary);
-            margin: 80px 0 40px 0;
-            white-space: nowrap;
-        }
-        .section-title::before {
-            content: '01.'; /* Numaralandırma estetiği */
-            color: var(--accent-color);
-            font-family: 'Fira Code', monospace;
-            margin-right: 15px;
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: var(--accent);
             font-size: 1.5rem;
         }
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 300px;
-            height: 1px;
-            background: rgba(136, 146, 176, 0.3);
-            margin-left: 20px;
-        }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
 
-        /* --- AI Terminal Görünümü --- */
-        .ai-terminal {
-            background-color: #020c1b;
+        /* --- AI TERMINAL --- */
+        .terminal-box {
+            background: #0f172a;
+            border: 1px solid #334155;
             border-radius: 10px;
-            padding: 30px;
-            border: 1px solid #1d2d50;
-            position: relative;
-            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
-        }
-        .terminal-header {
+            padding: 20px;
+            margin: 50px 0;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
             font-family: 'Fira Code', monospace;
-            color: var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+        .terminal-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+        .cmd-line { color: #22c55e; margin-bottom: 10px; }
+        .ai-text { color: #cbd5e1; line-height: 1.6; }
+        .highlight { color: var(--accent); font-weight: bold; }
+
+        /* --- TIMELINE (EĞİTİM) --- */
+        .timeline {
+            position: relative;
+            margin: 50px 0;
+            padding-left: 30px;
+            border-left: 2px solid #334155;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+        .timeline-date {
+            font-family: 'Fira Code';
             font-size: 0.9rem;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #1d2d50;
-            padding-bottom: 10px;
+            color: var(--accent);
         }
-        .terminal-content {
-            color: var(--text-secondary);
-            font-style: italic;
+        .timeline-title {
+            font-size: 1.5rem;
+            margin: 5px 0;
+            color: #fff;
         }
-        .highlight { color: var(--accent-color); }
 
-        /* --- Glassmorphism Yetenek Kartları --- */
-        .skills-grid {
+        /* --- 3D KARTLAR --- */
+        .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+            perspective: 1000px;
         }
-        .skill-card {
-            background: rgba(17, 34, 64, 0.7); /* Yarı saydam arka plan */
-            backdrop-filter: blur(10px); /* Buzlu cam efekti */
-            -webkit-backdrop-filter: blur(10px);
-            padding: 30px 20px;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-        }
-        .skill-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-color);
-        }
-        .skill-icon {
-            font-size: 2.5rem;
-            color: var(--accent-color);
-            margin-bottom: 20px;
-        }
-        .skill-card h3 { margin: 0 0 10px 0; color: var(--text-primary); }
-        .skill-card p { font-size: 0.9rem; color: var(--text-secondary); margin: 0; }
 
-        /* --- Footer ve İletişim --- */
+        .tilt-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            transition: transform 0.1s, box-shadow 0.3s; /* Hızlı tepki için 0.1s */
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        
+        /* Javascript ile tilt efekti verilecek ama fallback hover */
+        .tilt-card:hover {
+            box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+            border-color: var(--accent);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            transform: translateZ(20px); /* İkon havada dursun */
+        }
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            transform: translateZ(10px);
+        }
+        .card-desc {
+            color: #94a3b8;
+            transform: translateZ(10px);
+        }
+
         footer {
             text-align: center;
-            padding: 50px 0;
-            margin-top: 100px;
-            color: var(--text-secondary);
-            font-family: 'Fira Code', monospace;
-            font-size: 0.8rem;
+            padding: 40px;
+            color: #64748b;
+            font-size: 0.9rem;
         }
-        .social-links a {
-            color: var(--text-primary);
-            font-size: 1.8rem;
-            margin: 0 15px;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-        .social-links a:hover {
-            color: var(--accent-color);
-            transform: translateY(-5px);
-        }
+        .socials a { color: #fff; margin: 0 10px; font-size: 1.5rem; transition: 0.3s; }
+        .socials a:hover { color: var(--accent); }
 
-        /* --- Mobil Düzenlemeler --- */
-        @media (max-width: 768px) {
-            .section-title::after { width: 100px; }
-            #hero { align-items: center; text-align: center; }
-            .intro-text { justify-content: center; }
-            .version-badge { top: 15px; right: 15px; padding: 5px 10px; font-size: 0.8rem;}
-        }
     </style>
 </head>
 <body>
 
-    <div class="version-badge">
-        <i class="fas fa-code-branch"></i> v1.1.0
-    </div>
+    <canvas id="canvas-bg"></canvas>
+
+    <div class="version-badge">v1.2.0 • Interactive</div>
 
     <div class="container">
         
-        <section id="hero">
-            <div class="intro-text">Merhaba, benim adım</div>
-            <h1 class="big-heading">Aleyna Korkmaz.</h1>
-            <h2 class="sub-heading">Veriyi analize, hayalleri tasarıma dönüştürüyorum.</h2>
-            
-            <div class="typing-container">
-                 <p class="typing-text">Matematikçi | Veri Analisti Adayı | 3D Tasarım Meraklısı</p>
-            </div>
-            
-            <p style="max-width: 500px; margin-top: 30px; color: var(--text-secondary);">
-                İstanbul Üniversitesi Matematik öğrencisiyim. Analitik düşünce yapımı Python ve SQL ile birleştirerek verilerden anlamlı hikayeler çıkarıyor, Blender ve Unity ile yaratıcı dünyalar keşfediyorum.
+        <section class="hero hidden-section">
+            <p>Merhaba, ben</p>
+            <h1>Aleyna Korkmaz</h1>
+            <p style="border:none; padding:0; color:#fff; font-size: 1.5rem;">
+                Matematik & Veri & Sanat
             </p>
+            <p>
+                > Analitik zeka ile veriyi işliyor,<br>
+                > Yaratıcı vizyon ile tasarıma döküyorum.
+            </p>
+            
+            <div class="scroll-indicator">
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
         </section>
 
-
-        <section id="ai-perspective">
-            <h2 class="section-title">Sistem Analizi</h2>
-            
-            <div class="ai-terminal">
-                <div class="terminal-header">
-                    >_ GİRİŞ: GEMINI_AI_LOG // KONU: ALEYNA_KORKMAZ
-                </div>
-                <div class="terminal-content">
-                    "<span class="highlight">Tespit edilen profil:</span> Aleyna, soyut matematiksel teoriler ile somut veri uygulamaları arasında güçlü bir köprü kurabilen nadir zihinlerden. Kocaeli'den İstanbul Üniversitesi'ne uzanan akademik disiplini, onun zorluklar karşısındaki direncini gösteriyor.<br><br>
-                    Sadece veriyi işlemekle kalmıyor; <span class="highlight">Blender ve Unity</span> yetenekleri sayesinde analitik sonuçları görsel ve etkileşimli deneyimlere dönüştürme potansiyeli taşıyor. 'Sürekli öğrenme' modülü her zaman aktif; İŞKUR ve YÖK projelerindeki katılımı bunun kanıtı."
+        <section class="hidden-section">
+            <div class="terminal-box">
+                <div class="cmd-line">root@gemini:~/users/aleyna# run analysis.py</div>
+                <div class="ai-text">
+                    [INFO] Profil Yükleniyor...<br>
+                    [SUCCESS] <span class="highlight">Aleyna Korkmaz</span> tespit edildi.<br><br>
+                    "Aleyna'nın profili, klasik matematik disiplini ile modern teknoloji araçlarının (Python, SQL) mükemmel bir birleşimi. Veri setlerinin içindeki gizli desenleri görme yeteneğine sahip. Aynı zamanda Blender ve Unity ilgisi, onun sadece 'hesaplayan' değil, aynı zamanda 'üreten' bir zihin olduğunu kanıtlıyor."
                 </div>
             </div>
         </section>
 
-
-        <section id="skills">
-            <h2 class="section-title" style="--section-num: '02.'">Teknik Cephanelik</h2>
-            
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fa-brands fa-python"></i></div>
-                    <h3>Python</h3>
-                    <p>Pandas, NumPy ile Veri Manipülasyonu</p>
+        <section class="hidden-section">
+            <h2 style="color: #fff; border-bottom: 2px solid var(--accent); display:inline-block;">Akademik Yolculuk</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2025 - 2028 (Güncel)</div>
+                    <div class="timeline-title">İstanbul Üniversitesi</div>
+                    <div style="color: #94a3b8;">Matematik Bölümü | Lisans</div>
+                    <small style="color: #64748b;">Analitik düşünme ve ileri matematiksel teoriler.</small>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fa-solid fa-database"></i></div>
-                    <h3>SQL</h3>
-                    <p>Karmaşık Sorgular & Veri Tabanı Yönetimi</p>
+                <div class="timeline-item">
+                    <div class="timeline-date">2023 - 2025</div>
+                    <div class="timeline-title">Kocaeli Üniversitesi</div>
+                    <div style="color: #94a3b8;">Matematik Bölümü (Yatay Geçiş)</div>
+                    <small style="color: #64748b;">SQL ve C++ temellerinin atıldığı dönem.</small>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fa-solid fa-cubes-stacked"></i></div>
-                    <h3>Blender 3D</h3>
-                    <p>Modelleme, Render & Yaratıcı Tasarım</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fa-solid fa-chart-pie"></i></div>
-                    <h3>Veri Analitiği</h3>
-                    <p>İstatistiksel Analiz & Veri Görselleştirme</p>
-                </div>
-                 <div class="skill-card">
-                    <div class="skill-icon"><i class="fa-brands fa-unity"></i></div>
-                    <h3>Unity Engine</h3>
-                    <p>Oyun Geliştirme Temelleri & C#</p>
+                <div class="timeline-item">
+                    <div class="timeline-date">Projeler & Sertifikalar</div>
+                    <div class="timeline-title">Sürekli Gelişim</div>
+                    <div style="color: #94a3b8;">YÖK Veri Analiz Okulu & İŞKUR</div>
+                    <small style="color: #64748b;">Panel Veri Analizi, Python Eğitimi.</small>
                 </div>
             </div>
         </section>
-        
+
+        <section class="hidden-section" style="margin-bottom: 100px;">
+            <h2 style="color: #fff; border-bottom: 2px solid var(--accent); display:inline-block; margin-bottom: 30px;">Uzmanlık Alanları</h2>
+            
+            <div class="grid-container">
+                <div class="tilt-card">
+                    <div class="card-icon"><i class="fa-brands fa-python"></i></div>
+                    <h3 class="card-title">Python</h3>
+                    <p class="card-desc">Veri analizi, otomasyon ve algoritmik problem çözme.</p>
+                </div>
+
+                <div class="tilt-card">
+                    <div class="card-icon"><i class="fa-solid fa-chart-simple"></i></div>
+                    <h3 class="card-title">Veri Analizi</h3>
+                    <p class="card-desc">SQL, Büyük Veri işleme ve İstatistiksel Raporlama.</p>
+                </div>
+
+                <div class="tilt-card">
+                    <div class="card-icon"><i class="fa-solid fa-cube"></i></div>
+                    <h3 class="card-title">Blender & 3D</h3>
+                    <p class="card-desc">Soyut modelleme ve görselleştirme yeteneği.</p>
+                </div>
+
+                <div class="tilt-card">
+                    <div class="card-icon"><i class="fa-brands fa-unity"></i></div>
+                    <h3 class="card-title">Unity</h3>
+                    <p class="card-desc">Oyun geliştirme ve interaktif dünyalar.</p>
+                </div>
+            </div>
+        </section>
+
         <footer>
-            <div class="social-links">
-                <a href="https://github.com/aleynakorkmazz" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
-                <a href="#" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                <a href="mailto:aleynaa3442@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+            <div class="socials">
+                <a href="https://github.com/aleynakorkmazz"><i class="fa-brands fa-github"></i></a>
+                <a href="mailto:aleynaa3442@gmail.com"><i class="fa-solid fa-envelope"></i></a>
             </div>
-            <p style="margin-top: 20px;">
-                İstanbul'da <i class="fa-solid fa-code" style="color: var(--accent-color);"></i> ile tasarlandı. &copy; 2026
-            </p>
+            <p>&copy; 2026 Aleyna Korkmaz. Powered by Coffee & Data.</p>
         </footer>
 
     </div>
 
+    <script>
+        // 1. SCROLL ANIMASYONLARI
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show-section');
+                }
+            });
+        });
+
+        const hiddenElements = document.querySelectorAll('.hidden-section');
+        hiddenElements.forEach((el) => observer.observe(el));
+
+
+        // 2. 3D TILT EFEKTİ (KARTLAR İÇİN)
+        const cards = document.querySelectorAll('.tilt-card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Kartın merkezini bul
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Dönüş açılarını hesapla
+                const rotateX = ((y - centerY) / centerY) * -10; // X ekseninde dönüş
+                const rotateY = ((x - centerX) / centerX) * 10;  // Y ekseninde dönüş
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+            });
+        });
+
+
+        // 3. CANVAS ARKA PLAN ANİMASYONU (NETWORK EFEKTİ)
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray;
+
+        // Fare pozisyonu
+        let mouse = { x: null, y: null, radius: (canvas.height/80) * (canvas.width/80) }
+
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        // Parçacık Sınıfı
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x; this.y = y;
+                this.directionX = directionX; this.directionY = directionY;
+                this.size = size; this.color = color;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = '#38bdf8'; // Mavi noktalar
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                
+                // Fare etkileşimi
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                if (distance < mouse.radius + this.size){
+                     if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 10;
+                     if (mouse.x > this.x && this.x > this.size * 10) this.x -= 10;
+                     if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 10;
+                     if (mouse.y > this.y && this.y > this.size * 10) this.y -= 10;
+                }
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 2) - 1; // Hız
+                let directionY = (Math.random() * 2) - 1;
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, '#38bdf8'));
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0,0,innerWidth, innerHeight);
+            
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connect();
+        }
+
+        // Noktaları birbirine bağla (Network Efekti)
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
+                                   ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width/7) * (canvas.height/7)) {
+                        opacityValue = 1 - (distance/20000);
+                        ctx.strokeStyle = 'rgba(56, 189, 248,' + opacityValue + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+            mouse.radius = ((canvas.height/80) * (canvas.height/80));
+            init();
+        });
+
+        init();
+        animate();
+    </script>
 </body>
 </html>
